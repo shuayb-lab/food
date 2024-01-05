@@ -47,6 +47,26 @@
       margin-top: 10px;
       text-align: center;
     }
+
+    /* Additional styling for images */
+    #cloudImage, #sumoImage {
+      max-width: 100%;
+      height: auto;
+      margin-top: 20px;
+    }
+
+    /* Additional styling for alphabets */
+    .alternate-color {
+      color: red;
+    }
+
+    .alternate-color:nth-child(2n) {
+      color: yellow;
+    }
+
+    em {
+      font-style: italic;
+    }
   </style>
 </head>
 <body>
@@ -67,6 +87,22 @@
     <p>Total Protein: <span id="totalProtein">0g</span></p>
     <p>Total Carbs: <span id="totalCarbs">0g</span></p>
     <p>Total Calories: <span id="totalCalories">0</span></p>
+  </div>
+
+  <!-- Updated with the Imgur image URL -->
+  <img id="cloudImage" src="https://i.imgur.com/BPT5mEK.jpeg" alt="Cloud Image">
+
+  <!-- Additional data for nutrition -->
+  <div>
+    <h2>Additional Nutrition Data</h2>
+    <ul>
+      <li><em class="alternate-color">A</em>pples: Protein - 0.3g, Carbs - 14g, Calories - 52</li>
+      <li><em class="alternate-color">B</em>ananas: Protein - 1.3g, Carbs - 27g, Calories - 89</li>
+      <li><em class="alternate-color">C</em>hicken: Protein - 31g, Carbs - 0g, Calories - 165</li>
+      <li><em class="alternate-color">D</em>airy (Yogurt): Protein - 10g, Carbs - 3.6g, Calories - 59</li>
+      <li><em class="alternate-color">E</em>ggs: Protein - 13g, Carbs - 1g, Calories - 155</li>
+      <!-- Add more items as needed -->
+    </ul>
   </div>
 
   <script>
@@ -91,6 +127,7 @@
       strawberries: { protein: 0.7, carbs: 7, calories: 32 },
       grapes: { protein: 0.6, carbs: 18, calories: 69 },
       avocado: { protein: 2, carbs: 9, calories: 160 }
+      // Add more foods as needed
     };
 
     let totalProtein = 0;
@@ -113,7 +150,7 @@
         const resultText = `You've ingested ${foodAmount}g of ${foodName}: 
           ${protein.toFixed(2)}g protein, ${carbs.toFixed(2)}g carbs, ${calories.toFixed(2)} calories.`;
 
-        document.getElementById('result').textContent = resultText;
+        document.getElementById('result').innerHTML = resultText;
 
         updateCounter();
       } else {
