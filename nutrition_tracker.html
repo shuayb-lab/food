@@ -8,6 +8,12 @@
     body {
       font-family: 'Arial', sans-serif;
       margin: 20px;
+      background-color: #3498db; /* Blue background */
+      color: white;
+    }
+
+    h1 {
+      text-align: center;
     }
 
     label {
@@ -24,7 +30,7 @@
     button {
       margin-top: 10px;
       padding: 10px;
-      background-color: #4CAF50;
+      background-color: #2ecc71; /* Green button */
       color: white;
       border: none;
       border-radius: 5px;
@@ -34,6 +40,12 @@
     #result {
       margin-top: 20px;
       font-weight: bold;
+      text-align: center;
+    }
+
+    #counter {
+      margin-top: 10px;
+      text-align: center;
     }
   </style>
 </head>
@@ -50,8 +62,14 @@
 
   <div id="result"></div>
 
+  <div id="counter">
+    <p>Rolling Counter:</p>
+    <p>Total Protein: <span id="totalProtein">0g</span></p>
+    <p>Total Carbs: <span id="totalCarbs">0g</span></p>
+    <p>Total Calories: <span id="totalCalories">0</span></p>
+  </div>
+
   <script>
-    // JavaScript object to store nutrition information
     const nutritionInfo = {
       chicken: { protein: 31, carbs: 0, calories: 165 },
       rice: { protein: 2.7, carbs: 28, calories: 130 },
@@ -73,8 +91,11 @@
       strawberries: { protein: 0.7, carbs: 7, calories: 32 },
       grapes: { protein: 0.6, carbs: 18, calories: 69 },
       avocado: { protein: 2, carbs: 9, calories: 160 }
-      // Add more foods as needed
     };
+
+    let totalProtein = 0;
+    let totalCarbs = 0;
+    let totalCalories = 0;
 
     function calculateNutrition() {
       const foodName = document.getElementById('food').value.toLowerCase();
@@ -85,13 +106,25 @@
         const carbs = (nutritionInfo[foodName].carbs * foodAmount) / 100;
         const calories = (nutritionInfo[foodName].calories * foodAmount) / 100;
 
+        totalProtein += protein;
+        totalCarbs += carbs;
+        totalCalories += calories;
+
         const resultText = `You've ingested ${foodAmount}g of ${foodName}: 
           ${protein.toFixed(2)}g protein, ${carbs.toFixed(2)}g carbs, ${calories.toFixed(2)} calories.`;
 
         document.getElementById('result').textContent = resultText;
+
+        updateCounter();
       } else {
         document.getElementById('result').textContent = 'Food not found in the database.';
       }
+    }
+
+    function updateCounter() {
+      document.getElementById('totalProtein').textContent = `${totalProtein.toFixed(2)}g`;
+      document.getElementById('totalCarbs').textContent = `${totalCarbs.toFixed(2)}g`;
+      document.getElementById('totalCalories').textContent = `${totalCalories}`;
     }
   </script>
 </body>
