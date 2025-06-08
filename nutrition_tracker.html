@@ -1,18 +1,24 @@
+<!-- File: index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Track your daily nutrition intake with this simple Nutrition Tracker." />
+  <meta property="og:title" content="Nutrition Tracker" />
+  <meta property="og:image" content="https://i.imgur.com/BPT5mEK.jpeg" />
+  <meta property="og:description" content="Calculate and track proteins, carbs, and calories." />
+  <meta name="theme-color" content="#3498db" />
   <title>Nutrition Tracker</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
       margin: 20px;
-      background-color: #3498db; /* Blue background */
+      background-color: #3498db;
       color: white;
     }
 
-    h1 {
+    h1, h2 {
       text-align: center;
     }
 
@@ -30,32 +36,28 @@
     button {
       margin-top: 10px;
       padding: 10px;
-      background-color: #2ecc71; /* Green button */
+      background-color: #2ecc71;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
 
-    #result {
+    #result, #counter {
       margin-top: 20px;
       font-weight: bold;
       text-align: center;
     }
 
-    #counter {
-      margin-top: 10px;
-      text-align: center;
-    }
-
-    /* Additional styling for images */
-    #cloudImage, #sumoImage {
+    #cloudImage {
       max-width: 100%;
       height: auto;
       margin-top: 20px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    /* Additional styling for alphabets */
     .alternate-color {
       color: red;
     }
@@ -76,7 +78,7 @@
   <input type="text" id="food" placeholder="Enter food name" />
 
   <label for="amount">Amount (grams):</label>
-  <input type="number" id="amount" placeholder="Enter amount in grams" />
+  <input type="number" id="amount" placeholder="Enter amount in grams" min="1" />
 
   <button onclick="calculateNutrition()">Calculate Nutrition</button>
 
@@ -89,10 +91,8 @@
     <p>Total Calories: <span id="totalCalories">0</span></p>
   </div>
 
-  <!-- Updated with the Imgur image URL -->
-  <img id="cloudImage" src="https://i.imgur.com/BPT5mEK.jpeg" alt="Cloud Image">
+  <img id="cloudImage" src="https://i.imgur.com/BPT5mEK.jpeg" alt="Cloud Image" />
 
-  <!-- Additional data for nutrition -->
   <div>
     <h2>Additional Nutrition Data</h2>
     <ul>
@@ -101,7 +101,6 @@
       <li><em class="alternate-color">C</em>hicken: Protein - 31g, Carbs - 0g, Calories - 165</li>
       <li><em class="alternate-color">D</em>airy (Yogurt): Protein - 10g, Carbs - 3.6g, Calories - 59</li>
       <li><em class="alternate-color">E</em>ggs: Protein - 13g, Carbs - 1g, Calories - 155</li>
-      <!-- Add more items as needed -->
     </ul>
   </div>
 
@@ -109,11 +108,11 @@
     const nutritionInfo = {
       chicken: { protein: 31, carbs: 0, calories: 165 },
       rice: { protein: 2.7, carbs: 28, calories: 130 },
-      milk: { protein: 3.2, carbs: 0, calories: 42},
-      potato: {protein: 1.9, carbs: 15.4, calories: 87},
-      cocacola: {protein: 0, carbs: 11, calories: 43},
-      weetabix: {protein: 12, carbs: 69, calories: 362},
-      drypasta: {protein: 13, carbs: 74.7, calories: 371},
+      milk: { protein: 3.2, carbs: 0, calories: 42 },
+      potato: { protein: 1.9, carbs: 15.4, calories: 87 },
+      cocacola: { protein: 0, carbs: 11, calories: 43 },
+      weetabix: { protein: 12, carbs: 69, calories: 362 },
+      drypasta: { protein: 13, carbs: 74.7, calories: 371 },
       beef: { protein: 26, carbs: 0, calories: 250 },
       bread: { protein: 8, carbs: 49, calories: 265 },
       eggs: { protein: 13, carbs: 1, calories: 155 },
@@ -131,7 +130,6 @@
       strawberries: { protein: 0.7, carbs: 7, calories: 32 },
       grapes: { protein: 0.6, carbs: 18, calories: 69 },
       avocado: { protein: 2, carbs: 9, calories: 160 }
-      // Add more foods as needed
     };
 
     let totalProtein = 0;
@@ -139,22 +137,27 @@
     let totalCalories = 0;
 
     function calculateNutrition() {
-      const foodName = document.getElementById('food').value.toLowerCase();
+      const foodName = document.getElementById('food').value.trim().toLowerCase();
       const foodAmount = parseFloat(document.getElementById('amount').value);
 
-      if (foodName in nutritionInfo) {
-        const protein = (nutritionInfo[foodName].protein * foodAmount) / 100;
-        const carbs = (nutritionInfo[foodName].carbs * foodAmount) / 100;
-        const calories = (nutritionInfo[foodName].calories * foodAmount) / 100;
+      if (!foodName || isNaN(foodAmount) || foodAmount <= 0) {
+        document.getElementById('result').textContent = 'Please enter valid food and amount.';
+        return;
+      }
+
+      if (nutritionInfo.hasOwnProperty(foodName)) {
+        const food = nutritionInfo[foodName];
+        const protein = (food.protein * foodAmount) / 100;
+        const carbs = (food.carbs * foodAmount) / 100;
+        const calories = (food.calories * foodAmount) / 100;
 
         totalProtein += protein;
         totalCarbs += carbs;
         totalCalories += calories;
 
-        const resultText = `You've ingested ${foodAmount}g of ${foodName}: 
+        document.getElementById('result').innerHTML = 
+          `You've ingested ${foodAmount}g of ${foodName}: 
           ${protein.toFixed(2)}g protein, ${carbs.toFixed(2)}g carbs, ${calories.toFixed(2)} calories.`;
-
-        document.getElementById('result').innerHTML = resultText;
 
         updateCounter();
       } else {
@@ -165,7 +168,7 @@
     function updateCounter() {
       document.getElementById('totalProtein').textContent = `${totalProtein.toFixed(2)}g`;
       document.getElementById('totalCarbs').textContent = `${totalCarbs.toFixed(2)}g`;
-      document.getElementById('totalCalories').textContent = `${totalCalories}`;
+      document.getElementById('totalCalories').textContent = `${totalCalories.toFixed(0)}`;
     }
   </script>
 </body>
